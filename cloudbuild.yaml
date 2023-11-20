@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/flaskhelloworld-405618/flaskhelloworld', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/flaskhelloworld-405618/flaskhelloworld']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'flaskhelloworld', '--image', 'gcr.io/flaskhelloworld-405618/flaskhelloworld', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/flaskhelloworld-405618/flaskhelloworld
